@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import com.example.mydraw.DrawPad.DrawSize;
 import com.example.mydraw.DrawPad.DrawType;
 
 import android.opengl.Visibility;
@@ -72,9 +73,23 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 			break;
 		case R.id.pointButton:
 			mainCanvas.setDraw(DrawType.POINT);
+			toggleButtonMenu();
 			break;
 		case R.id.lineButton:
 			mainCanvas.setDraw(DrawType.LINE);
+			toggleButtonMenu();
+			break;
+		case R.id.widthSmallButton:
+			mainCanvas.setDrawSize(DrawSize.SMALL);
+			toggleButtonMenu();
+			break;
+		case R.id.widthMediumButton:
+			mainCanvas.setDrawSize(DrawSize.MEDIUM);
+			toggleButtonMenu();
+			break;
+		case R.id.widthLargeButton:
+			mainCanvas.setDrawSize(DrawSize.LARGE);
+			toggleButtonMenu();
 			break;
 	}
 		

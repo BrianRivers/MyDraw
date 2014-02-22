@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Cap;
 import android.graphics.Path;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -21,8 +22,22 @@ public class DrawPad extends View {
 	private Paint pictureLine;
 	private Path path;
 	private DrawType drawType;
+	private DrawSize drawSize;
 	
 	public enum DrawType { LINE, CIRCLE, SQUARE, POINT }
+	public enum DrawSize { 
+		SMALL(1), MEDIUM(5), LARGE(10);
+		
+		private int drawSize;
+		
+		DrawSize(int _drawSize){
+			drawSize = _drawSize;
+		}
+		
+		public int getSize(){
+			return drawSize;
+		}
+	}
 	
 	public DrawPad(Context context) {
         this(context, null, 0);
@@ -40,6 +55,8 @@ public class DrawPad extends View {
         pictureLine = new Paint();
 		pictureLine.setColor(Color.WHITE);
 		pictureLine.setStyle(Paint.Style.STROKE);
+		pictureLine.setStrokeCap(Cap.ROUND);
+		pictureLine.setStrokeWidth(DrawSize.SMALL.getSize());
 		
 		xPointPositions = new ArrayList<Float>();
 		yPointPositions = new ArrayList<Float>();
@@ -51,6 +68,11 @@ public class DrawPad extends View {
     
     public void setDraw(DrawType _drawType){
     	drawType = _drawType;
+    }
+    
+    public void setDrawSize(DrawSize _drawSize){
+    	drawSize = _drawSize;
+    	pictureLine.setStrokeWidth(drawSize.getSize());
     }
 
     @Override
@@ -100,9 +122,14 @@ public class DrawPad extends View {
 		}
     }
     
-    public void readyPoint(MotionEvent event, float tempX, float tempY){
-    	xPointPositions.add(tempX);
-    	yPointPositions.add(tempY);
+    public void readyPoint(MotionEvent event,  float tempX, float tempY){
+    	
+    	//Not sure if I should check for duplicates in array prior to adding.  Size vs Processing time.
+    	//if(!xPointPositions.contains(tempX))
+    		xPointPositions.add(tempX);
+    	//if(!yPointPositions.contains(tempY))
+    		yPointPositions.add(tempY);
+    	
     }
     
     public void clearCanvas(){
