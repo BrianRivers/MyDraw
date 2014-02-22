@@ -19,8 +19,6 @@
     	 	
     	</LinearLayout>
     	
-     
-
      <RelativeLayout
          android:layout_width="fill_parent"
          android:layout_height="fill_parent" >
@@ -31,67 +29,71 @@
              android:layout_height="30dp"
              android:background="@drawable/ic_launcher" />
 
-		<LinearLayout
-		    android:layout_width="140dp"
-		    android:layout_height="40dp"
-		    android:layout_alignParentTop="true"
-		    android:layout_toRightOf="@+id/topLeftCornerButton" 
-		    android:visibility="gone">
+         <Button
+             android:id="@+id/bottonRightCornerButton"
+             android:layout_width="30dp"
+             android:layout_height="30dp"
+             android:layout_alignParentBottom="true"
+             android:layout_alignParentRight="true"
+             android:background="@drawable/ic_launcher" />
 
-		    <Button
-		        android:id="@+id/widthSmallButton"
-		        android:layout_width="40dp"
-		        android:layout_height="40dp"
-		        android:background="@drawable/ic_launcher" />
+         <LinearLayout
+             android:id="@+id/widthLayout"
+             android:layout_width="140dp"
+             android:layout_height="40dp"
+             android:layout_alignParentTop="true"
+             android:layout_centerHorizontal="true"
+             android:visibility="gone" >
 
-		    <Button
-		        android:id="@+id/widthMediumButton"
-		        android:layout_width="40dp"
-		        android:layout_height="40dp"
-		        android:background="@drawable/ic_launcher" />
+             <Button
+                 android:id="@+id/widthSmallButton"
+                 android:layout_width="40dp"
+                 android:layout_height="40dp"
+                 android:background="@drawable/ic_launcher" />
 
-		    <Button
-		        android:id="@+id/widthLargeButton"
-		        android:layout_width="40dp"
-		        android:layout_height="40dp"
-		        android:background="@drawable/ic_launcher" />
-		</LinearLayout>
+             <Button
+                 android:id="@+id/widthMediumButton"
+                 android:layout_width="40dp"
+                 android:layout_height="40dp"
+                 android:background="@drawable/ic_launcher" />
 
-		<Button
-		    android:id="@+id/bottonRightCornerButton"
-		    android:layout_width="30dp"
-		    android:layout_height="30dp"
-		    android:layout_alignParentBottom="true"
-		    android:layout_alignParentRight="true"
-		    android:background="@drawable/ic_launcher" />
+             <Button
+                 android:id="@+id/widthLargeButton"
+                 android:layout_width="40dp"
+                 android:layout_height="40dp"
+                 android:background="@drawable/ic_launcher" />
+         </LinearLayout>
 
-		<LinearLayout
-		    android:layout_width="40dp"
-		    android:layout_height="140dp"
-		    android:layout_alignParentLeft="true"
-		    android:layout_below="@+id/topLeftCornerButton"
-		    android:orientation="vertical"
-		    android:visibility="gone" >
+         <LinearLayout
+            android:id="@+id/typeLayout"
+             android:layout_width="40dp"
+             android:layout_height="140dp"
+             android:layout_alignParentLeft="true"
+             android:layout_below="@+id/widthLayout"
+             android:layout_marginTop="22dp"
+             android:orientation="vertical"
+             android:visibility="gone" >
 
-		    <Button
-		        android:id="@+id/colorButtonOne"
-		        android:layout_width="40dp"
-		        android:layout_height="40dp"
-		        android:background="@drawable/ic_launcher" />
+             <Button
+                 android:id="@+id/pointButton"
+                 android:layout_width="40dp"
+                 android:layout_height="40dp"
+                 android:background="@drawable/ic_launcher"
+                 android:text="Points" />
 
-		    <Button
-		        android:id="@+id/colorButtonTwo"
-		        android:layout_width="40dp"
-		        android:layout_height="40dp"
-		        android:background="@drawable/ic_launcher" />
+             <Button
+                 android:id="@+id/lineButton"
+                 android:layout_width="40dp"
+                 android:layout_height="40dp"
+                 android:background="@drawable/ic_launcher" 
+                 android:text="Line"/>
 
-		    <Button
-		        android:id="@+id/colorButtonThree"
-		        android:layout_width="40dp"
-		        android:layout_height="40dp"
-		        android:background="@drawable/ic_launcher" />
-		</LinearLayout>
-
+             <Button
+                 android:id="@+id/circleButton"
+                 android:layout_width="40dp"
+                 android:layout_height="40dp"
+                 android:background="@drawable/ic_launcher" />
+         </LinearLayout>
      </RelativeLayout>
 
 </FrameLayout>
