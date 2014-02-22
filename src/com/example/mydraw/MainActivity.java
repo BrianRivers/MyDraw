@@ -29,6 +29,7 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 	
 	LinearLayout typeLayout;
 	LinearLayout widthLayout;
+	LinearLayout canvasLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +37,6 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		setContentView(R.layout.activity_main);
 		
 		initViews();
-		
-		
 		mainCanvas.setOnTouchListener(this);
 	}
 
@@ -54,6 +53,7 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		switch(item.getItemId()){
 			case R.id.clearAll:
 				mainCanvas.clearCanvas();
+				break;
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -96,9 +96,10 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 	}
 	
 	public void initViews(){
-		
+		Log.i("Test Click Event", "< ----------------- Enter initViews() ----------------->");
 		buttonMap = new HashMap<String, Button>();
 		mainCanvas = (DrawPad) findViewById(R.id.mainCanvas);
+		
 		
 		buttonMap.put("topLeftCornerButton", (Button)findViewById(R.id.topLeftCornerButton));
 		buttonMap.put("bottomRightCornerButton", (Button)findViewById(R.id.bottonRightCornerButton));
@@ -111,12 +112,17 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		
 		typeLayout = (LinearLayout) findViewById(R.id.typeLayout);
 		widthLayout = (LinearLayout) findViewById(R.id.widthLayout);
+		canvasLayout = (LinearLayout) findViewById(R.id.canvasLayout);
+		
+	
 		
 		for(Entry<String,Button> entry: buttonMap.entrySet()){
 			entry.getValue().setOnClickListener(this);
 		}
 		
 		
+		
+		Log.i("Test Click Event", "< ----------------- Exit initViews() ----------------->");
 	}
 	
 	public void toggleButtonMenu(){

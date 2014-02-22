@@ -6,8 +6,10 @@
      >
     
      <LinearLayout 
+        android:id="@+id/canvasLayout"
     	android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
+    	android:orientation="horizontal"
     	>
     	
     	<com.example.mydraw.DrawPad
@@ -15,7 +17,7 @@
     	    android:layout_width="fill_parent"
     	    android:layout_height="fill_parent"
     	    android:background="#777"
-    	    />
+    	    /> 
     	 	
     	</LinearLayout>
     	

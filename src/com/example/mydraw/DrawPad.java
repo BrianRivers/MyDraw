@@ -1,7 +1,10 @@
 package com.example.mydraw;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -13,16 +16,20 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 
 public class DrawPad extends View {
 	
 	private List<Float> xPointPositions;
 	private List<Float> yPointPositions;
-//	private List<Float> pointPositions;
-	private Paint pictureLine;
-	private Path path;
+	private List<Paint> paintLine;
+	private List<Paint> paintPoint;
+	private List<Path> path;
+	
 	private DrawType drawType;
 	private DrawSize drawSize;
+	
+	
 	
 	public enum DrawType { LINE, CIRCLE, SQUARE, POINT }
 	public enum DrawSize { 
@@ -51,18 +58,30 @@ public class DrawPad extends View {
         super(context, attrs, defStyleAttr);
         
         drawType = DrawType.LINE;
+        drawSize = DrawSize.SMALL;
         
-        pictureLine = new Paint();
-		pictureLine.setColor(Color.WHITE);
-		pictureLine.setStyle(Paint.Style.STROKE);
-		pictureLine.setStrokeCap(Cap.ROUND);
-		pictureLine.setStrokeWidth(DrawSize.SMALL.getSize());
+        Path initialPath = new Path();
+        Paint initialPaint = new Paint();
+        
+        initialPaint.setColor(Color.WHITE);
+        initialPaint.setStyle(Paint.Style.STROKE);
+        initialPaint.setStrokeCap(Cap.ROUND);
+        initialPaint.setStrokeWidth(drawSize.getSize());
+	
+		
+		paintLine = new ArrayList<Paint>();
+		paintPoint = new ArrayList<Paint>();
+		
+		path = new ArrayList<Path>();
+		
+		paintLine.add(initialPaint);
+		paintPoint.add(initialPaint);
+		path.add(initialPath);
 		
 		xPointPositions = new ArrayList<Float>();
 		yPointPositions = new ArrayList<Float>();
-		
-		path = new Path();
-		
+		xPointPositions.add(Float.valueOf(-10));
+		yPointPositions.add(Float.valueOf(-10));
 		
     }
     
@@ -72,21 +91,34 @@ public class DrawPad extends View {
     
     public void setDrawSize(DrawSize _drawSize){
     	drawSize = _drawSize;
-    	pictureLine.setStrokeWidth(drawSize.getSize());
+    	addDrawing();
+    	
     }
+    
+    public void addDrawing(){
 
+      Paint tempPaint = new Paint();
+      
+	  tempPaint.setColor(Color.WHITE);
+      tempPaint.setStyle(Paint.Style.STROKE);
+      tempPaint.setStrokeCap(Cap.ROUND);
+      tempPaint.setStrokeWidth(drawSize.getSize());
+      
+      Log.i("Test Event", "<-------------" + tempPaint.getStrokeWidth() + "------------- >");
+      
+      paintLine.add(tempPaint);
+      paintPoint.add(tempPaint);
+      path.add(new Path());
+      xPointPositions.add(Float.valueOf(-10));
+      yPointPositions.add(Float.valueOf(-10));
+      
+    }
+    
     @Override
 	public boolean onTouchEvent(MotionEvent event){
-    	
-    	//xPosition.add(event.getX());
-    	//yPosition.add(event.getY());
-    	
-    	
+	
     	float tempX = event.getX();
     	float tempY = event.getY();
-    	
-    	//Adds points to point Positions.  Will be used to drop into drawPoints(floats[], Paint paint).  No for loop needed?
-    	
     	
     	switch(drawType){
     	case LINE:
@@ -110,11 +142,11 @@ public class DrawPad extends View {
     	switch (event.getAction()) {
 	    case MotionEvent.ACTION_DOWN:
 	        Log.i("Test Event", "<------------- DOWN ------------- >");
-	        path.moveTo(tempX, tempY);
+	        path.get(path.size() -1 ).moveTo(tempX, tempY);
 	        break;
 	    case MotionEvent.ACTION_MOVE:
 	    	Log.i("Test Event", "<------------- MOVE ------------- >");
-	    	path.lineTo(tempX, tempY);
+	    	path.get(path.size() -1 ).lineTo(tempX, tempY);
 	        break;
 	    case MotionEvent.ACTION_UP:
 	    	Log.i("Test Event", "<------------- UP ------------- >");
@@ -123,31 +155,32 @@ public class DrawPad extends View {
     }
     
     public void readyPoint(MotionEvent event,  float tempX, float tempY){
-    	
-    	//Not sure if I should check for duplicates in array prior to adding.  Size vs Processing time.
-    	//if(!xPointPositions.contains(tempX))
     		xPointPositions.add(tempX);
-    	//if(!yPointPositions.contains(tempY))
     		yPointPositions.add(tempY);
+    		paintPoint.add(paintPoint.get(paintPoint.size()-1));
     	
     }
     
     public void clearCanvas(){
-    	path.reset();
+    	path.clear();
+    	paintLine.clear();
     	xPointPositions.clear();
     	yPointPositions.clear();
+    	addDrawing();
     	invalidate();
+    	
     }
     
     @Override
     protected void onDraw(Canvas canvas) {
     	super.onDraw(canvas);
-    	
-    		
-    		canvas.drawPath(path, pictureLine);
+
+    		for (int count = 0; count < path.size(); count++){
+    			canvas.drawPath(path.get(count), paintLine.get(count));
+    		}
     		
     		for(int count = 0; count < xPointPositions.size(); count++){
-    			canvas.drawPoint(xPointPositions.get(count), yPointPositions.get(count), pictureLine);
+    			canvas.drawPoint(xPointPositions.get(count), yPointPositions.get(count), paintPoint.get(count));
     		}
     		//Will be used to draw out points.  Need to translate point arraylist into an array?
     		//canvas.drawPoints(pointPositions, pictureLine);
