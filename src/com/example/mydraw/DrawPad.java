@@ -28,6 +28,7 @@ public class DrawPad extends View {
 	
 	private DrawType drawType;
 	private DrawSize drawSize;
+	private int colorPicked;
 	
 	
 	
@@ -59,11 +60,14 @@ public class DrawPad extends View {
         
         drawType = DrawType.LINE;
         drawSize = DrawSize.SMALL;
+        colorPicked = Color.WHITE;
         
         Path initialPath = new Path();
         Paint initialPaint = new Paint();
         
-        initialPaint.setColor(Color.WHITE);
+        Log.i("Test Event", "<-------------" + Color.WHITE + "------------- >");
+        
+        initialPaint.setColor(colorPicked);
         initialPaint.setStyle(Paint.Style.STROKE);
         initialPaint.setStrokeCap(Cap.ROUND);
         initialPaint.setStrokeWidth(drawSize.getSize());
@@ -95,11 +99,16 @@ public class DrawPad extends View {
     	
     }
     
+    public void setColor(int _colorPicked){
+    	colorPicked = _colorPicked;
+    	addDrawing();
+    }
+    
     public void addDrawing(){
 
       Paint tempPaint = new Paint();
       
-	  tempPaint.setColor(Color.WHITE);
+	  tempPaint.setColor(colorPicked);
       tempPaint.setStyle(Paint.Style.STROKE);
       tempPaint.setStrokeCap(Cap.ROUND);
       tempPaint.setStrokeWidth(drawSize.getSize());
@@ -164,8 +173,10 @@ public class DrawPad extends View {
     public void clearCanvas(){
     	path.clear();
     	paintLine.clear();
+    	paintPoint.clear();
     	xPointPositions.clear();
     	yPointPositions.clear();
+    	
     	addDrawing();
     	invalidate();
     	

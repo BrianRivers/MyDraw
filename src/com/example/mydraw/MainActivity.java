@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 
 import com.example.mydraw.DrawPad.DrawSize;
 import com.example.mydraw.DrawPad.DrawType;
+import com.larswerkman.holocolorpicker.ColorPicker;
+import com.larswerkman.holocolorpicker.ColorPicker.OnColorChangedListener;
 
 import android.opengl.Visibility;
 import android.os.Bundle;
@@ -22,7 +24,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnTouchListener, OnClickListener {
+public class MainActivity extends Activity implements OnTouchListener, OnClickListener, OnColorChangedListener {
 	
 	DrawPad mainCanvas;
 	HashMap<String, Button> buttonMap;
@@ -30,6 +32,8 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 	LinearLayout typeLayout;
 	LinearLayout widthLayout;
 	LinearLayout canvasLayout;
+	
+	ColorPicker colorPicker;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,10 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		
 		initViews();
 		mainCanvas.setOnTouchListener(this);
+		
+		colorPicker = (ColorPicker) findViewById(R.id.colorPicker);
+		colorPicker.setOnColorChangedListener(this);
+		colorPicker.setOnClickListener(this);
 	}
 
 	@Override
@@ -66,30 +74,30 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		Log.i("Test Click Event", "< ----------------- I Was Clicked! ----------------->");
 		switch(v.getId()){
 		case R.id.topLeftCornerButton:
-			toggleButtonMenu();
+			toggleButtonMenu(R.id.topLeftCornerButton);
 			break;
 		case R.id.bottonRightCornerButton:
-			mainCanvas.clearCanvas();
+			toggleButtonMenu(R.id.bottonRightCornerButton);
 			break;
 		case R.id.pointButton:
 			mainCanvas.setDraw(DrawType.POINT);
-			toggleButtonMenu();
+			toggleButtonMenu(R.id.topLeftCornerButton);
 			break;
 		case R.id.lineButton:
 			mainCanvas.setDraw(DrawType.LINE);
-			toggleButtonMenu();
+			toggleButtonMenu(R.id.topLeftCornerButton);
 			break;
 		case R.id.widthSmallButton:
 			mainCanvas.setDrawSize(DrawSize.SMALL);
-			toggleButtonMenu();
+			toggleButtonMenu(R.id.topLeftCornerButton);
 			break;
 		case R.id.widthMediumButton:
 			mainCanvas.setDrawSize(DrawSize.MEDIUM);
-			toggleButtonMenu();
+			toggleButtonMenu(R.id.topLeftCornerButton);
 			break;
 		case R.id.widthLargeButton:
 			mainCanvas.setDrawSize(DrawSize.LARGE);
-			toggleButtonMenu();
+			toggleButtonMenu(R.id.topLeftCornerButton);
 			break;
 	}
 		
@@ -125,16 +133,34 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		Log.i("Test Click Event", "< ----------------- Exit initViews() ----------------->");
 	}
 	
-	public void toggleButtonMenu(){
+	public void toggleButtonMenu(int toggle){
 		
-		if(typeLayout.getVisibility() == View.VISIBLE) {
-			typeLayout.setVisibility(View.GONE);
-			widthLayout.setVisibility(View.GONE);
-		}else{
-			typeLayout.setVisibility(View.VISIBLE);
-			widthLayout.setVisibility(View.VISIBLE);
+		switch(toggle){
+		case R.id.topLeftCornerButton :
+			if(typeLayout.getVisibility() == View.VISIBLE) {
+				typeLayout.setVisibility(View.GONE);
+				widthLayout.setVisibility(View.GONE);
+			}else{
+				typeLayout.setVisibility(View.VISIBLE);
+				widthLayout.setVisibility(View.VISIBLE);
+			}
+			break;
+		case R.id.bottonRightCornerButton:
+			if(colorPicker.getVisibility() == View.VISIBLE) {
+				colorPicker.setVisibility(View.GONE);
+				mainCanvas.setColor(colorPicker.getColor());
+			}else{
+				colorPicker.setVisibility(View.VISIBLE);
+			}
 		}
 			
+	}
+
+	@Override
+	public void onColorChanged(int color) {
+		// TODO Auto-generated method stub
+		Log.i("Test Click Event", "< ----------------- "+ colorPicker.getColor() + " ----------------->");
+		colorPicker.setOldCenterColor(colorPicker.getColor());
 	}
 
 }
