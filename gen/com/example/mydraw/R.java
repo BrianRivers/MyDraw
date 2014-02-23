@@ -146,21 +146,26 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int bottonRightCornerButton=0x7f080003;
+        public static final int bottonRightCornerButton=0x7f080009;
         public static final int canvasLayout=0x7f080000;
-        public static final int circleButton=0x7f08000c;
-        public static final int clearAll=0x7f08000e;
-        public static final int colorPicker=0x7f080004;
-        public static final int lineButton=0x7f08000b;
+        public static final int circleButton=0x7f080011;
+        public static final int clearAll=0x7f080013;
+        public static final int colorPicker=0x7f080003;
+        public static final int colorPickerLayout=0x7f080002;
+        public static final int lineButton=0x7f080010;
         public static final int mainCanvas=0x7f080001;
-        public static final int pointButton=0x7f08000a;
-        public static final int topLeftCornerButton=0x7f080002;
-        public static final int topRightCornerButton=0x7f08000d;
-        public static final int typeLayout=0x7f080009;
-        public static final int widthLargeButton=0x7f080008;
-        public static final int widthLayout=0x7f080005;
-        public static final int widthMediumButton=0x7f080007;
-        public static final int widthSmallButton=0x7f080006;
+        public static final int opacitybar=0x7f080004;
+        public static final int pointButton=0x7f08000f;
+        public static final int saturationbar=0x7f080005;
+        public static final int svbar=0x7f080007;
+        public static final int topLeftCornerButton=0x7f080008;
+        public static final int topRightCornerButton=0x7f080012;
+        public static final int typeLayout=0x7f08000e;
+        public static final int valuebar=0x7f080006;
+        public static final int widthLargeButton=0x7f08000d;
+        public static final int widthLayout=0x7f08000a;
+        public static final int widthMediumButton=0x7f08000c;
+        public static final int widthSmallButton=0x7f08000b;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

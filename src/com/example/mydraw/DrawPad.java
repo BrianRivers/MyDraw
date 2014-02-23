@@ -45,7 +45,7 @@ public class DrawPad extends View {
 	
 	public enum DrawType { LINE, CIRCLE, SQUARE, POINT }
 	public enum DrawSize { 
-		SMALL(1), MEDIUM(5), LARGE(10);
+		SMALL(5), MEDIUM(10), LARGE(20);
 		
 		private int drawSize;
 		

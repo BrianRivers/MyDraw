@@ -9,6 +9,10 @@ import com.example.mydraw.DrawPad.DrawSize;
 import com.example.mydraw.DrawPad.DrawType;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.ColorPicker.OnColorChangedListener;
+import com.larswerkman.holocolorpicker.OpacityBar;
+import com.larswerkman.holocolorpicker.SVBar;
+import com.larswerkman.holocolorpicker.SaturationBar;
+import com.larswerkman.holocolorpicker.ValueBar;
 
 import android.opengl.Visibility;
 import android.os.Bundle;
@@ -32,8 +36,13 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 	LinearLayout typeLayout;
 	LinearLayout widthLayout;
 	LinearLayout canvasLayout;
+	LinearLayout colorPickerLayout;
 	
 	ColorPicker colorPicker;
+	OpacityBar opacityBar;
+	SVBar svBar;
+	SaturationBar saturationBar;
+	ValueBar valueBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +52,14 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		initViews();
 		mainCanvas.setOnTouchListener(this);
 		
-		colorPicker = (ColorPicker) findViewById(R.id.colorPicker);
+		
 		colorPicker.setOnColorChangedListener(this);
 		colorPicker.setOnClickListener(this);
+		colorPicker.addOpacityBar(opacityBar);
+		colorPicker.addSVBar(svBar);
+		colorPicker.addOpacityBar(opacityBar);
+		colorPicker.addSaturationBar(saturationBar);
+		colorPicker.addValueBar(valueBar);
 	}
 
 	@Override
@@ -126,7 +140,13 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		typeLayout = (LinearLayout) findViewById(R.id.typeLayout);
 		widthLayout = (LinearLayout) findViewById(R.id.widthLayout);
 		canvasLayout = (LinearLayout) findViewById(R.id.canvasLayout);
+		colorPickerLayout = (LinearLayout) findViewById(R.id.colorPickerLayout);
 		
+		colorPicker = (ColorPicker) findViewById(R.id.colorPicker);
+		opacityBar = (OpacityBar) findViewById(R.id.opacitybar);
+		svBar = (SVBar) findViewById(R.id.svbar);
+		saturationBar = (SaturationBar) findViewById(R.id.saturationbar);
+		valueBar = (ValueBar) findViewById(R.id.valuebar);
 	
 		
 		for(Entry<String,Button> entry: buttonMap.entrySet()){
@@ -151,11 +171,11 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 			}
 			break;
 		case R.id.bottonRightCornerButton:
-			if(colorPicker.getVisibility() == View.VISIBLE) {
-				colorPicker.setVisibility(View.GONE);
+			if(colorPickerLayout.getVisibility() == View.VISIBLE) {
+				colorPickerLayout.setVisibility(View.GONE);
 				mainCanvas.setColor(colorPicker.getColor());
 			}else{
-				colorPicker.setVisibility(View.VISIBLE);
+				colorPickerLayout.setVisibility(View.VISIBLE);
 			}
 		}
 			
