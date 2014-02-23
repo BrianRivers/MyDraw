@@ -17,6 +17,10 @@ import com.larswerkman.holocolorpicker.ValueBar;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,24 +29,29 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnTouchListener, OnClickListener, OnColorChangedListener {
 	
-	DrawPad mainCanvas;
-	HashMap<String, Button> buttonMap;
+	private DrawPad mainCanvas;
+	private HashMap<String, Button> buttonMap;
 	
-	LinearLayout typeLayout;
-	LinearLayout widthLayout;
-	LinearLayout canvasLayout;
-	LinearLayout colorPickerLayout;
+	private LinearLayout typeLayout;
+	private LinearLayout widthLayout;
+	private LinearLayout canvasLayout;
+	private LinearLayout colorPickerLayout;
 	
-	ColorPicker colorPicker;
-	OpacityBar opacityBar;
-	SVBar svBar;
-	SaturationBar saturationBar;
-	ValueBar valueBar;
+	private ColorPicker colorPicker;
+	private OpacityBar opacityBar;
+	private SVBar svBar;
+	private SaturationBar saturationBar;
+	private ValueBar valueBar;
+	
+	private int valueCheck;
+	
+	AlertDialog.Builder alert;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +114,12 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 			mainCanvas.setDraw(DrawType.LINE);
 			toggleButtonMenu(R.id.topLeftCornerButton);
 			break;
+		case R.id.circleButton:
+			initAlert();
+			alert.setTitle("Desired radius?");
+			alert.show();
+			Log.i("Test Click Event", "< ----------------- " + valueCheck + " ----------------->");
+			break;
 		case R.id.widthSmallButton:
 			mainCanvas.setDrawSize(DrawSize.SMALL);
 			toggleButtonMenu(R.id.topLeftCornerButton);
@@ -148,7 +163,7 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		saturationBar = (SaturationBar) findViewById(R.id.saturationbar);
 		valueBar = (ValueBar) findViewById(R.id.valuebar);
 	
-		
+		initAlert();
 		for(Entry<String,Button> entry: buttonMap.entrySet()){
 			entry.getValue().setOnClickListener(this);
 		}
@@ -156,6 +171,35 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		
 		
 		Log.i("Test Click Event", "< ----------------- Exit initViews() ----------------->");
+	}
+	
+	public void initAlert(){
+		alert = new AlertDialog.Builder(this);
+		
+		alert.setTitle("Title");
+
+		// Set up the input
+		final EditText input = new EditText(this);
+		// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+		input.setInputType(InputType.TYPE_CLASS_TEXT);
+		alert.setView(input);
+
+		// Set up the buttons
+		alert.setPositiveButton("OK", new DialogInterface.OnClickListener() { 
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        valueCheck = Integer.parseInt(input.getText().toString());
+		        mainCanvas.setRadius(valueCheck);
+		        mainCanvas.setDraw(DrawType.CIRCLE);
+				toggleButtonMenu(R.id.topLeftCornerButton);
+		    }
+		});
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        dialog.cancel();
+		    }
+		});
 	}
 	
 	public void toggleButtonMenu(int toggle){
