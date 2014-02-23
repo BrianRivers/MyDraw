@@ -79,6 +79,10 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		case R.id.bottonRightCornerButton:
 			toggleButtonMenu(R.id.bottonRightCornerButton);
 			break;
+		case R.id.topRightCornerButton:
+			 Log.i("Test Event", "<------------- Enter TopRightCorner OnClick ------------- >");
+			mainCanvas.savePicture(true, "test");
+			break;
 		case R.id.pointButton:
 			mainCanvas.setDraw(DrawType.POINT);
 			toggleButtonMenu(R.id.topLeftCornerButton);
@@ -111,6 +115,7 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		
 		buttonMap.put("topLeftCornerButton", (Button)findViewById(R.id.topLeftCornerButton));
 		buttonMap.put("bottomRightCornerButton", (Button)findViewById(R.id.bottonRightCornerButton));
+		buttonMap.put("topRightCornerButton", (Button)findViewById(R.id.topRightCornerButton));
 		buttonMap.put("widthSmallButton", (Button)findViewById(R.id.widthSmallButton));
 		buttonMap.put("widthMediumButton", (Button)findViewById(R.id.widthMediumButton));
 		buttonMap.put("widthLargeButton", (Button)findViewById(R.id.widthLargeButton));

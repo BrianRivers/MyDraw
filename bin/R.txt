@@ -25,12 +25,13 @@ int drawable ic_launcher 0x7f020000
 int id bottonRightCornerButton 0x7f080003
 int id canvasLayout 0x7f080000
 int id circleButton 0x7f08000c
-int id clearAll 0x7f08000d
+int id clearAll 0x7f08000e
 int id colorPicker 0x7f080004
 int id lineButton 0x7f08000b
 int id mainCanvas 0x7f080001
 int id pointButton 0x7f08000a
 int id topLeftCornerButton 0x7f080002
+int id topRightCornerButton 0x7f08000d
 int id typeLayout 0x7f080009
 int id widthLargeButton 0x7f080008
 int id widthLayout 0x7f080005

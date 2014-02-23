@@ -1,12 +1,17 @@
 package com.example.mydraw;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import android.R.bool;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -29,6 +34,12 @@ public class DrawPad extends View {
 	private DrawType drawType;
 	private DrawSize drawSize;
 	private int colorPicked;
+	private String fileName;
+	
+	private int canvasWidth;
+	private int canvasHeight;
+	private Bitmap saveBitmap;
+	private boolean toggleSave;
 	
 	
 	
@@ -61,6 +72,7 @@ public class DrawPad extends View {
         drawType = DrawType.LINE;
         drawSize = DrawSize.SMALL;
         colorPicked = Color.WHITE;
+        toggleSave = false;
         
         Path initialPath = new Path();
         Paint initialPaint = new Paint();
@@ -121,6 +133,22 @@ public class DrawPad extends View {
       xPointPositions.add(Float.valueOf(-10));
       yPointPositions.add(Float.valueOf(-10));
       
+    }
+    
+    public void savePicture(boolean _toggleSave, String _fileName){
+    	 Log.i("Test Event", "<------------- Entered SavePicture ------------- >");
+    	toggleSave = _toggleSave;
+    	fileName = _fileName;
+    	invalidate();
+    	 Log.i("Test Event", "<------------- Exit SavePicture ------------- >");
+    	
+    }
+    
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    	canvasWidth = w;
+    	canvasHeight = h;
+    	super.onSizeChanged(w, h, oldw, oldh);
     }
     
     @Override
@@ -185,6 +213,12 @@ public class DrawPad extends View {
     @Override
     protected void onDraw(Canvas canvas) {
     	super.onDraw(canvas);
+    	
+    		if(toggleSave){
+    			 Log.i("Test Event", "<------------- Entered first IF ------------- >");
+    			saveBitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
+    			canvas.setBitmap(saveBitmap);
+    		}
 
     		for (int count = 0; count < path.size(); count++){
     			canvas.drawPath(path.get(count), paintLine.get(count));
@@ -192,6 +226,18 @@ public class DrawPad extends View {
     		
     		for(int count = 0; count < xPointPositions.size(); count++){
     			canvas.drawPoint(xPointPositions.get(count), yPointPositions.get(count), paintPoint.get(count));
+    		}
+    		
+    		if(toggleSave){
+    			try {
+    				 Log.i("Test Event", "<------------- Entered secodn If ------------- >");
+					saveBitmap.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(new File("/data/data/com.example.mydraw/" + fileName + ".jpg")));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    			toggleSave = false;
+    			invalidate();
     		}
     		//Will be used to draw out points.  Need to translate point arraylist into an array?
     		//canvas.drawPoints(pointPositions, pictureLine);
