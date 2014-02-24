@@ -147,17 +147,27 @@ containing a value of this type.
     }
     public static final class id {
         public static final int bottonRightCornerButton=0x7f080009;
+        public static final int button1=0x7f08001a;
         public static final int canvasLayout=0x7f080000;
         public static final int circleButton=0x7f080011;
-        public static final int clearAll=0x7f080013;
+        public static final int clearAll=0x7f08001d;
         public static final int colorPicker=0x7f080003;
         public static final int colorPickerLayout=0x7f080002;
+        public static final int editText1=0x7f080015;
+        public static final int fillRadioButton=0x7f080019;
         public static final int lineButton=0x7f080010;
         public static final int mainCanvas=0x7f080001;
         public static final int opacitybar=0x7f080004;
-        public static final int pointButton=0x7f08000f;
+        public static final int rectangleButton=0x7f08000f;
         public static final int saturationbar=0x7f080005;
+        public static final int setBackground=0x7f08001b;
+        public static final int sizeInputLayout=0x7f080013;
+        public static final int strokeRadioButton=0x7f080018;
+        public static final int strokeRadioGroup=0x7f080017;
+        public static final int strokeWidth=0x7f08001c;
         public static final int svbar=0x7f080007;
+        public static final int textView1=0x7f080014;
+        public static final int textView2=0x7f080016;
         public static final int topLeftCornerButton=0x7f080008;
         public static final int topRightCornerButton=0x7f080012;
         public static final int typeLayout=0x7f08000e;

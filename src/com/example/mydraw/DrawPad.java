@@ -3,6 +3,7 @@ package com.example.mydraw;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -18,26 +19,27 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
-public class DrawPad extends View {
+public class DrawPad extends View implements Serializable {
 	
 	//Array Lists
-	private List<Circle> circles;
-	private List<Point> points;
-	private List<Paint> paintLine;
 	private List<Dpath> path;
+
+	
+	private List<Shape> shapes;
 	
 	//Setting variables
 	private DrawType drawType;
-	private DrawSize drawSize;
+	private int drawSize;
 	private int colorPicked;
 	private String fileName;
-	private int radiusSize;
+	private Paint.Style paintStyle;
 	
 	 
 	//For Saving the image
@@ -48,15 +50,49 @@ public class DrawPad extends View {
 	
 	
 	
-	class Shape{}
+	class Shape{
+		
+		private DrawType shapeType;
+		
+		public DrawType getShapeType(){
+			return shapeType;
+		}
+		
+		public float getXPoint(){
+			float test = 0;
+			return test;
+		}
+		public float getYPoint(){
+			float test = 0;
+			return test;
+		}
+		public Path getPath(){
+			Path test = new Path();
+			return test;
+		}
+		public Paint getPaint(){
+			Paint test = new Paint();
+			return test;
+		}
+		public float getRadius(){
+			float test = 0;
+			return test;
+		}
+		public Rect getRect(){
+			Rect test = new Rect();
+			return test;
+		}
+	}
 	
 	class Dpath extends Shape {
 		private Path path;
 		private Paint paint;
+		private DrawType shapeType;
 		
 		Dpath(Path _path, Paint _paint){
 			path = _path;
 			paint = _paint;
+			shapeType = DrawType.LINE;
 		}
 		
 		public Path getPath(){
@@ -65,6 +101,10 @@ public class DrawPad extends View {
 		
 		public Paint getPaint(){
 			return paint;
+		}
+		
+		public DrawType getShapeType(){
+			return shapeType;
 		}
 	}
 	
@@ -91,30 +131,61 @@ public class DrawPad extends View {
 			return paint;
 		}
 		
+		
 	}
 	
 	class Circle extends Point{
 		
 		private float radius;
-
+		private DrawType shapeType;
 		
 		Circle(float _xCircle, float _yCircle, float _radius, Paint _paint){
 			super.xPoint = _xCircle;
 			super.yPoint = _yCircle;
 			radius = _radius;
 			super.paint = _paint;
+			shapeType = DrawType.CIRCLE;
+			
 		}
 
 		public float getRadius(){
 			return radius;
 		}
+		public DrawType getShapeType(){
+			return shapeType;
+		}
 		
+	}
+	
+	class Rectangle extends Shape{
+		
+		private Rect rect;
+		private Paint paint;
+		private DrawType shapeType;
+		
+		Rectangle(Rect _rect, Paint _paint){
+			paint = _paint;
+			rect = _rect;
+			shapeType = DrawType.RECTANGLE;
+		}
+		
+		public Rect getRect(){
+			return rect;
+		}
+		
+		public Paint getPaint(){
+			return paint;
+		}
+		
+		public DrawType getShapeType(){
+			return shapeType;
+		}
 	}
 	
 	
 	
 	
-	public enum DrawType { LINE, CIRCLE, SQUARE, POINT }
+	public enum DrawType { LINE, CIRCLE, SQUARE, POINT, RECTANGLE }
 	public enum DrawSize { 
 		SMALL(5), MEDIUM(10), LARGE(20);
 		
@@ -141,59 +212,51 @@ public class DrawPad extends View {
         super(context, attrs, defStyleAttr);
         
         drawType = DrawType.LINE;
-        drawSize = DrawSize.SMALL;
+        drawSize = 5;
         colorPicked = Color.WHITE;
         toggleSave = false;
-        radiusSize = 0;
-        
-
-        
-        Log.i("Test Event", "<-------------" + Color.WHITE + "------------- >");
-        
+        paintStyle = Paint.Style.STROKE;
  
-		
-		paintLine = new ArrayList<Paint>();
 		path = new ArrayList<Dpath>();
-		points = new ArrayList<Point>();
-		circles = new ArrayList<Circle>();
+		shapes = new ArrayList<Shape>();
 		
-		path.add(new Dpath(new Path(), new Paint(setPaint(colorPicked, Paint.Style.STROKE, Paint.Cap.ROUND,drawSize.getSize()))));
+		path.add(new Dpath(new Path(), new Paint(setPaint(colorPicked, paintStyle, Paint.Cap.ROUND,drawSize))));
+		shapes.add(path.get(0));
+		
+		Log.i("Test Inside Draw", "<-------------" + shapes.get(0).getShapeType() + "------------- >");
     }
  
     public void setDraw(DrawType _drawType){
     	drawType = _drawType;
+    	resetPath();
     }
     
-    public void setDrawSize(DrawSize _drawSize){
+    public void setDrawSize(int _drawSize){
     	drawSize = _drawSize;
-    	addDrawing();
-    	
+    	resetPath();
     }
     
     public void setColor(int _colorPicked){
     	colorPicked = _colorPicked;
-    	addDrawing();
+    	resetPath();
     }
     
-    public void setRadius(int _radiusSize){
-    	radiusSize = _radiusSize;
+    public void setPaintStyle(Paint.Style _paintStyle){
+    	paintStyle = _paintStyle;
+    	resetPath();
     }
-    public void addDrawing(){
-
-      Paint tempPaint = new Paint();
-      
-	  tempPaint.setColor(colorPicked);
-      tempPaint.setStyle(Paint.Style.STROKE);
-      tempPaint.setStrokeCap(Cap.ROUND);
-      tempPaint.setStrokeWidth(drawSize.getSize());
-      
-      Log.i("Test Event", "<-------------" + tempPaint.getStrokeWidth() + "------------- >");
-      
-      paintLine.add(tempPaint);
-      
-      path.add(new Dpath(new Path(), tempPaint));
     
-      
+    public void undoLast(){
+    	Log.i("Test Event", "<------------- Entered undoLast ------------- >");
+    	Shape shape = new Shape();
+    	if(!(shapes.size()-20 < 0)){
+    		Log.i("Test Event", "<------------- Enter undoLast  IF------------- >");
+    		//shapes.trimToSize();
+        	invalidate();
+        	//resetPath();
+    	}
+    	
+    	Log.i("Test Event", "<------------- Exit undoLast ------------- >");
     }
     
     public Paint setPaint(int color, Paint.Style stroke, Paint.Cap capType, int strokeWidth){
@@ -234,19 +297,23 @@ public class DrawPad extends View {
     	case CIRCLE:
     		readyCircle(event, tempX, tempY);
     		break;
-    	case POINT:
-    		readyPoint(event, tempX, tempY);
-    		break;
-    	case SQUARE:
+    	case RECTANGLE:
+    		readyRectangle(event, tempX, tempY);
     		break;
     	}
-		
+		shapes.add(path.get(path.size()-1));
 		invalidate();
 		return true;
 	}
-    
+    public void resetPath(){
+    	path.add(new Dpath(new Path(), new Paint(setPaint(colorPicked, paintStyle, Paint.Cap.ROUND,drawSize))));
+    	shapes.add(path.get(0));
+    }
+    public void readyRectangle(MotionEvent event, float tempX, float tempY){
+    	shapes.add(new Rectangle(new Rect((int)tempX, (int)tempY,(int) (tempX + drawSize),(int)( tempY + drawSize)), new Paint(setPaint(colorPicked, paintStyle, Paint.Cap.ROUND,drawSize))));
+    }
     public void readyCircle(MotionEvent event, float tempX, float tempY){
-    	circles.add(new Circle(tempX, tempY, radiusSize, new Paint(setPaint(colorPicked, Paint.Style.FILL_AND_STROKE, Paint.Cap.ROUND,drawSize.getSize()))));
+    	shapes.add(new Circle(tempX, tempY, drawSize, new Paint(setPaint(colorPicked, paintStyle, Paint.Cap.ROUND,drawSize))));
     	
     }
     
@@ -268,46 +335,37 @@ public class DrawPad extends View {
 	        break;
 		}
     	
-    	path.add(new Dpath(path.get(path.size()-1).getPath(), new Paint(setPaint(colorPicked, Paint.Style.STROKE, Paint.Cap.ROUND,drawSize.getSize()))));
-    }
-    
-    public void readyPoint(MotionEvent event,  float tempX, float tempY){
-    		points.add(new Point(tempX, tempY, new Paint(setPaint(colorPicked, Paint.Style.FILL_AND_STROKE, Paint.Cap.ROUND,drawSize.getSize()))));
+    	path.add(new Dpath(path.get(path.size()-1).getPath(), new Paint(setPaint(colorPicked, paintStyle, Paint.Cap.ROUND,drawSize))));
     }
     
     public void clearCanvas(){
     	path.clear();
-    	paintLine.clear();
-    	circles.clear();
-    	points.clear();
-    	
-    	addDrawing();
+    	shapes.clear();
+    	path.add(new Dpath(new Path(), new Paint(setPaint(colorPicked, paintStyle, Paint.Cap.ROUND,drawSize))));
+    	shapes.add(path.get(0));
     	invalidate();
     	
     }
     
     @Override
     protected void onDraw(Canvas canvas) {
-    	super.onDraw(canvas);
+    	super.onDraw(canvas);	
     	
     		if(toggleSave){
     			 Log.i("Test Event", "<------------- Entered first IF ------------- >");
     			saveBitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
     			canvas.setBitmap(saveBitmap);
     		}
-    		for(int count = 0; count < circles.size(); count++){
-    			canvas.drawCircle(circles.get(count).getXPoint(), circles.get(count).getYPoint(), circles.get(count).getRadius(), circles.get(count).getPaint());
-    		}
-
-    		for (int count = 0; count < path.size(); count++){
-    			canvas.drawPath(path.get(count).getPath(), path.get(count).getPaint());
-    		}
     		
-    		for(int count = 0; count < points.size(); count++){
-    			canvas.drawPoint(points.get(count).getXPoint(), points.get(count).getYPoint(), points.get(count).getPaint());
+    		for(int count = 0; count < shapes.size();count++){
+    			if(shapes.get(count).getShapeType() == DrawType.LINE){
+    				canvas.drawPath(shapes.get(count).getPath(), shapes.get(count).getPaint());
+    			}else if(shapes.get(count).getShapeType() == DrawType.RECTANGLE){
+    				canvas.drawRect(shapes.get(count).getRect(), shapes.get(count).getPaint());
+    			}else if(shapes.get(count).getShapeType() == DrawType.CIRCLE){
+    				canvas.drawCircle(shapes.get(count).getXPoint(), shapes.get(count).getYPoint(), shapes.get(count).getRadius(), shapes.get(count).getPaint());
+    			}
     		}
-    		
-    		
     		
     		if(toggleSave){
     			try {
@@ -320,9 +378,6 @@ public class DrawPad extends View {
     			toggleSave = false;
     			invalidate();
     		}
-    		//Will be used to draw out points.  Need to translate point arraylist into an array?
-    		//canvas.drawPoints(pointPositions, pictureLine);
-    	
     }
 
 }

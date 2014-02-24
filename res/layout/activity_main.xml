@@ -2,153 +2,223 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-     >
-    
-     <LinearLayout 
+    tools:context=".MainActivity" >
+
+    <LinearLayout
         android:id="@+id/canvasLayout"
-    	android:layout_width="fill_parent"
-    	android:layout_height="fill_parent"
-    	android:orientation="horizontal"
-    	>
-    	
-    	<com.example.mydraw.DrawPad
-    	    android:id="@+id/mainCanvas"
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent"
-    	    android:background="#777"
-    	    /> 
-    	 	
-    	</LinearLayout>
-    	
-     <LinearLayout 
-         android:id="@+id/colorPickerLayout"
-         android:layout_width="fill_parent"
-    	android:layout_height="fill_parent"
-    	android:orientation="vertical"
-    	android:background="#222"
-    	android:visibility="gone">
-    	
-            <com.larswerkman.holocolorpicker.ColorPicker
-		    android:id="@+id/colorPicker"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"
-		   />
-            
-          <com.larswerkman.holocolorpicker.OpacityBar
-		    android:id="@+id/opacitybar"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"/>
-          
-          <com.larswerkman.holocolorpicker.SaturationBar
-		    android:id="@+id/saturationbar"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"/>
-          
-          <com.larswerkman.holocolorpicker.ValueBar
-		    android:id="@+id/valuebar"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"/>
-          
-          <com.larswerkman.holocolorpicker.SVBar
-		    android:id="@+id/svbar"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"/>
-          
-     </LinearLayout>
-    	
-     <RelativeLayout
-         android:layout_width="fill_parent"
-         android:layout_height="fill_parent" >
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal" >
 
-         <Button
-             android:id="@+id/topLeftCornerButton"
-             android:layout_width="30dp"
-             android:layout_height="30dp"
-             android:background="@drawable/ic_launcher" />
+        <com.example.mydraw.DrawPad
+            android:id="@+id/mainCanvas"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#777" />
+    </LinearLayout>
 
-         <Button
-             android:id="@+id/bottonRightCornerButton"
-             android:layout_width="30dp"
-             android:layout_height="30dp"
-             android:layout_alignParentBottom="true"
-             android:layout_alignParentRight="true"
-             android:background="@drawable/ic_launcher" />
+    <LinearLayout
+        android:id="@+id/colorPickerLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#222"
+        android:orientation="vertical"
+        android:visibility="gone" >
 
-         
-       
-         
-          
-         <LinearLayout
-             android:id="@+id/widthLayout"
-             android:layout_width="140dp"
-             android:layout_height="40dp"
-             android:layout_alignParentTop="true"
-             android:layout_centerHorizontal="true"
-             android:visibility="gone" >
+        <com.larswerkman.holocolorpicker.ColorPicker
+            android:id="@+id/colorPicker"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
-             <Button
-                 android:id="@+id/widthSmallButton"
-                 android:layout_width="40dp"
-                 android:layout_height="40dp"
-                 android:background="@drawable/ic_launcher" />
+        <com.larswerkman.holocolorpicker.OpacityBar
+            android:id="@+id/opacitybar"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
-             <Button
-                 android:id="@+id/widthMediumButton"
-                 android:layout_width="40dp"
-                 android:layout_height="40dp"
-                 android:background="@drawable/ic_launcher" />
+        <com.larswerkman.holocolorpicker.SaturationBar
+            android:id="@+id/saturationbar"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
-             <Button
-                 android:id="@+id/widthLargeButton"
-                 android:layout_width="40dp"
-                 android:layout_height="40dp"
-                 android:background="@drawable/ic_launcher" />
-         </LinearLayout>
-         
-        
+        <com.larswerkman.holocolorpicker.ValueBar
+            android:id="@+id/valuebar"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
-         <LinearLayout
+        <com.larswerkman.holocolorpicker.SVBar
+            android:id="@+id/svbar"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <Button
+            android:id="@+id/topLeftCornerButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_launcher" />
+
+        <Button
+            android:id="@+id/bottonRightCornerButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_launcher" />
+
+        <LinearLayout
+            android:id="@+id/widthLayout"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" >
+
+            <Button
+                android:id="@+id/widthSmallButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_launcher" />
+
+            <Button
+                android:id="@+id/widthMediumButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_launcher" />
+
+            <Button
+                android:id="@+id/widthLargeButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_launcher" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/typeLayout"
-             android:layout_width="40dp"
-             android:layout_height="140dp"
-             android:layout_alignParentLeft="true"
-             android:layout_below="@+id/widthLayout"
-             android:layout_marginTop="22dp"
-             android:orientation="vertical"
-             android:visibility="gone" >
+            android:layout_width="40dp"
+            android:layout_height="140dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/widthLayout"
+            android:layout_marginTop="22dp"
+            android:orientation="vertical"
+            android:visibility="gone" >
 
-             <Button
-                 android:id="@+id/pointButton"
-                 android:layout_width="40dp"
-                 android:layout_height="40dp"
-                 android:background="@drawable/ic_launcher"
-                 android:text="Points" />
+            <Button
+                android:id="@+id/rectangleButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_launcher"
+                android:text="Rectangle" />
 
-             <Button
-                 android:id="@+id/lineButton"
-                 android:layout_width="40dp"
-                 android:layout_height="40dp"
-                 android:background="@drawable/ic_launcher" 
-                 android:text="Line"/>
+            <Button
+                android:id="@+id/lineButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_launcher"
+                android:text="Line" />
 
-             <Button
-                 android:id="@+id/circleButton"
-                 android:layout_width="40dp"
-                 android:layout_height="40dp"
-                 android:background="@drawable/ic_launcher" />
-         </LinearLayout>
+            <Button
+                android:id="@+id/circleButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_launcher" />
+        </LinearLayout>
 
-         <Button
-             android:id="@+id/topRightCornerButton"
-             android:layout_width="30dp"
-             android:layout_height="30dp"
-             android:layout_alignParentRight="true"
-             android:layout_alignParentTop="true"
-             android:background="@drawable/ic_launcher" />
+        <Button
+            android:id="@+id/topRightCornerButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/ic_launcher" />
+    </RelativeLayout>
 
-     </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/sizeInputLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#222"
+        android:orientation="vertical"
+        android:visibility="gone" >
 
-	
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="Enter Stroke Width"
+            android:textColor="#FFF"
+            android:textSize="32sp" />
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:inputType="numberSigned"
+            android:textColor="#FFF" />
+
+		<TextView
+		    android:id="@+id/textView2"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@+id/editText1"
+		    android:layout_centerHorizontal="true"
+		    android:layout_marginTop="25dp"
+		    android:text="Fill or Stroke?"
+		    android:textColor="#FFF"
+		    android:textSize="32sp" />
+
+		<RadioGroup
+		    android:id="@+id/strokeRadioGroup"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignLeft="@+id/textView2"
+		    android:layout_below="@+id/textView2"
+		    android:layout_marginLeft="36dp"
+		    android:layout_marginTop="19dp" >
+
+		    <RadioButton
+		        android:id="@+id/strokeRadioButton"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@+id/textView2"
+		        android:layout_centerHorizontal="true"
+		        android:layout_marginTop="34dp"
+		        android:checked="true"
+		        android:text="Stroke"
+		        android:textColor="#FFF"
+		        android:textSize="20sp" />
+
+		    <RadioButton
+		        android:id="@+id/fillRadioButton"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignLeft="@+id/strokeRadioButton"
+		        android:layout_below="@+id/strokeRadioButton"
+		        android:layout_marginTop="22dp"
+		        android:text="Fill"
+		        android:textColor="#FFF"
+		        android:textSize="20sp" />
+		</RadioGroup>
+
+		<Button
+		    android:id="@+id/button1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentBottom="true"
+		    android:layout_alignRight="@+id/strokeRadioGroup"
+		    android:layout_marginBottom="42dp"
+		    android:text="Enter" />
+
+    </RelativeLayout>
 
 </FrameLayout>

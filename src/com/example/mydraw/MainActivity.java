@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
@@ -31,6 +32,8 @@ import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnTouchListener, OnClickListener, OnColorChangedListener {
@@ -42,6 +45,9 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 	private LinearLayout widthLayout;
 	private LinearLayout canvasLayout;
 	private LinearLayout colorPickerLayout;
+	private RelativeLayout sizeInputLayout;
+	
+	private EditText strokeEditText;
 	
 	private ColorPicker colorPicker;
 	private OpacityBar opacityBar;
@@ -50,6 +56,8 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 	private ValueBar valueBar;
 	
 	private int valueCheck;
+	
+	private RadioGroup strokeFillRadio;
 	
 	AlertDialog.Builder alert;
 
@@ -85,6 +93,13 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 			case R.id.clearAll:
 				mainCanvas.clearCanvas();
 				break;
+			case R.id.strokeWidth:
+				toggleButtonMenu(R.id.strokeWidth);
+				break;
+			case R.id.setBackground:
+				toggleButtonMenu(R.id.setBackground);
+				
+				break;
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -104,10 +119,10 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 			break;
 		case R.id.topRightCornerButton:
 			 Log.i("Test Event", "<------------- Enter TopRightCorner OnClick ------------- >");
-			mainCanvas.savePicture(true, "test");
+			mainCanvas.undoLast();
 			break;
-		case R.id.pointButton:
-			mainCanvas.setDraw(DrawType.POINT);
+		case R.id.rectangleButton:
+			mainCanvas.setDraw(DrawType.RECTANGLE);
 			toggleButtonMenu(R.id.topLeftCornerButton);
 			break;
 		case R.id.lineButton:
@@ -115,22 +130,26 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 			toggleButtonMenu(R.id.topLeftCornerButton);
 			break;
 		case R.id.circleButton:
-			initAlert();
-			alert.setTitle("Desired radius?");
-			alert.show();
+			 mainCanvas.setDraw(DrawType.CIRCLE);
+			 toggleButtonMenu(R.id.topLeftCornerButton);
 			Log.i("Test Click Event", "< ----------------- " + valueCheck + " ----------------->");
 			break;
 		case R.id.widthSmallButton:
-			mainCanvas.setDrawSize(DrawSize.SMALL);
 			toggleButtonMenu(R.id.topLeftCornerButton);
 			break;
 		case R.id.widthMediumButton:
-			mainCanvas.setDrawSize(DrawSize.MEDIUM);
 			toggleButtonMenu(R.id.topLeftCornerButton);
 			break;
 		case R.id.widthLargeButton:
-			mainCanvas.setDrawSize(DrawSize.LARGE);
 			toggleButtonMenu(R.id.topLeftCornerButton);
+			break;
+		case R.id.button1:
+			toggleButtonMenu(R.id.button1);
+			mainCanvas.setDrawSize(Integer.parseInt(strokeEditText.getText().toString()));
+			if(strokeFillRadio.getCheckedRadioButtonId() == R.id.strokeRadioButton)
+				mainCanvas.setPaintStyle(Paint.Style.STROKE);
+			else if(strokeFillRadio.getCheckedRadioButtonId() == R.id.fillRadioButton)
+				mainCanvas.setPaintStyle(Paint.Style.FILL);
 			break;
 	}
 		
@@ -148,14 +167,18 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		buttonMap.put("widthSmallButton", (Button)findViewById(R.id.widthSmallButton));
 		buttonMap.put("widthMediumButton", (Button)findViewById(R.id.widthMediumButton));
 		buttonMap.put("widthLargeButton", (Button)findViewById(R.id.widthLargeButton));
-		buttonMap.put("pointButton", (Button)findViewById(R.id.pointButton));
+		buttonMap.put("pointButton", (Button)findViewById(R.id.rectangleButton));
 		buttonMap.put("circleButton", (Button)findViewById(R.id.circleButton));
 		buttonMap.put("lineButton", (Button)findViewById(R.id.lineButton));
+		buttonMap.put("setSizeButton", (Button)findViewById(R.id.button1));
 		
 		typeLayout = (LinearLayout) findViewById(R.id.typeLayout);
 		widthLayout = (LinearLayout) findViewById(R.id.widthLayout);
 		canvasLayout = (LinearLayout) findViewById(R.id.canvasLayout);
 		colorPickerLayout = (LinearLayout) findViewById(R.id.colorPickerLayout);
+		sizeInputLayout = (RelativeLayout) findViewById(R.id.sizeInputLayout);
+		strokeEditText = (EditText) findViewById(R.id.editText1);
+		strokeFillRadio = (RadioGroup) findViewById(R.id.strokeRadioGroup);
 		
 		colorPicker = (ColorPicker) findViewById(R.id.colorPicker);
 		opacityBar = (OpacityBar) findViewById(R.id.opacitybar);
@@ -166,10 +189,7 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		initAlert();
 		for(Entry<String,Button> entry: buttonMap.entrySet()){
 			entry.getValue().setOnClickListener(this);
-		}
-		
-		
-		
+		}	
 		Log.i("Test Click Event", "< ----------------- Exit initViews() ----------------->");
 	}
 	
@@ -189,9 +209,7 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
 		        valueCheck = Integer.parseInt(input.getText().toString());
-		        mainCanvas.setRadius(valueCheck);
-		        mainCanvas.setDraw(DrawType.CIRCLE);
-				toggleButtonMenu(R.id.topLeftCornerButton);
+		        mainCanvas.setDrawSize(valueCheck);
 		    }
 		});
 		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -215,13 +233,29 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 			}
 			break;
 		case R.id.bottonRightCornerButton:
+		case R.id.setBackground:
 			if(colorPickerLayout.getVisibility() == View.VISIBLE) {
 				colorPickerLayout.setVisibility(View.GONE);
-				mainCanvas.setColor(colorPicker.getColor());
+				if(R.id.bottonRightCornerButton == toggle)
+					mainCanvas.setColor(colorPicker.getColor());
+				else
+					mainCanvas.setBackgroundColor(colorPicker.getColor());
+				
 			}else{
 				colorPickerLayout.setVisibility(View.VISIBLE);
 			}
+		break;
+		case R.id.button1:
+		case R.id.strokeWidth:
+			if(sizeInputLayout.getVisibility() == View.VISIBLE) {
+				sizeInputLayout.setVisibility(View.GONE);
+			}else{
+				sizeInputLayout.setVisibility(View.VISIBLE);
+			}
+			break;
 		}
+		
+		
 			
 	}
 
