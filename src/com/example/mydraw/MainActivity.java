@@ -43,7 +43,6 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 	
 	private LinearLayout typeLayout;
 	private LinearLayout widthLayout;
-	private LinearLayout canvasLayout;
 	private LinearLayout colorPickerLayout;
 	private RelativeLayout sizeInputLayout;
 	
@@ -67,16 +66,7 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		setContentView(R.layout.activity_main);
 		
 		initViews();
-		mainCanvas.setOnTouchListener(this);
 		
-		
-		colorPicker.setOnColorChangedListener(this);
-		colorPicker.setOnClickListener(this);
-		colorPicker.addOpacityBar(opacityBar);
-		colorPicker.addSVBar(svBar);
-		colorPicker.addOpacityBar(opacityBar);
-		colorPicker.addSaturationBar(saturationBar);
-		colorPicker.addValueBar(valueBar);
 	}
 
 	@Override
@@ -98,7 +88,6 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 				break;
 			case R.id.setBackground:
 				toggleButtonMenu(R.id.setBackground);
-				
 				break;
 		}
 		
@@ -160,7 +149,6 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		buttonMap = new HashMap<String, Button>();
 		mainCanvas = (DrawPad) findViewById(R.id.mainCanvas);
 		
-		
 		buttonMap.put("topLeftCornerButton", (Button)findViewById(R.id.topLeftCornerButton));
 		buttonMap.put("bottomRightCornerButton", (Button)findViewById(R.id.bottonRightCornerButton));
 		buttonMap.put("topRightCornerButton", (Button)findViewById(R.id.topRightCornerButton));
@@ -174,7 +162,6 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		
 		typeLayout = (LinearLayout) findViewById(R.id.typeLayout);
 		widthLayout = (LinearLayout) findViewById(R.id.widthLayout);
-		canvasLayout = (LinearLayout) findViewById(R.id.canvasLayout);
 		colorPickerLayout = (LinearLayout) findViewById(R.id.colorPickerLayout);
 		sizeInputLayout = (RelativeLayout) findViewById(R.id.sizeInputLayout);
 		strokeEditText = (EditText) findViewById(R.id.editText1);
@@ -185,40 +172,23 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		svBar = (SVBar) findViewById(R.id.svbar);
 		saturationBar = (SaturationBar) findViewById(R.id.saturationbar);
 		valueBar = (ValueBar) findViewById(R.id.valuebar);
-	
-		initAlert();
+		
+		mainCanvas.setOnTouchListener(this);
+		colorPicker.setOnColorChangedListener(this);
+		colorPicker.setOnClickListener(this);
+		colorPicker.addOpacityBar(opacityBar);
+		colorPicker.addSVBar(svBar);
+		colorPicker.addOpacityBar(opacityBar);
+		colorPicker.addSaturationBar(saturationBar);
+		colorPicker.addValueBar(valueBar);
+		resetLayoutPosition(-40);
 		for(Entry<String,Button> entry: buttonMap.entrySet()){
 			entry.getValue().setOnClickListener(this);
 		}	
 		Log.i("Test Click Event", "< ----------------- Exit initViews() ----------------->");
 	}
 	
-	public void initAlert(){
-		alert = new AlertDialog.Builder(this);
-		
-		alert.setTitle("Title");
-
-		// Set up the input
-		final EditText input = new EditText(this);
-		// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-		input.setInputType(InputType.TYPE_CLASS_TEXT);
-		alert.setView(input);
-
-		// Set up the buttons
-		alert.setPositiveButton("OK", new DialogInterface.OnClickListener() { 
-		    @Override
-		    public void onClick(DialogInterface dialog, int which) {
-		        valueCheck = Integer.parseInt(input.getText().toString());
-		        mainCanvas.setDrawSize(valueCheck);
-		    }
-		});
-		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-		    @Override
-		    public void onClick(DialogInterface dialog, int which) {
-		        dialog.cancel();
-		    }
-		});
-	}
+	
 	
 	public void toggleButtonMenu(int toggle){
 		
@@ -227,9 +197,11 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 			if(typeLayout.getVisibility() == View.VISIBLE) {
 				typeLayout.setVisibility(View.GONE);
 				widthLayout.setVisibility(View.GONE);
+				resetLayoutPosition(-40);
 			}else{
 				typeLayout.setVisibility(View.VISIBLE);
 				widthLayout.setVisibility(View.VISIBLE);
+				resetLayoutPosition(40);
 			}
 			break;
 		case R.id.bottonRightCornerButton:
@@ -257,6 +229,11 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		
 		
 			
+	}
+	
+	public void resetLayoutPosition(float position){
+		typeLayout.animate().translationXBy(position).withLayer();
+		widthLayout.animate().translationYBy(position).withLayer();
 	}
 
 	@Override
