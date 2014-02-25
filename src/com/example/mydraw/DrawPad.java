@@ -45,9 +45,7 @@ public class DrawPad extends View implements Serializable {
 	
 	class Shape{
 		
-		public void draw(Canvas canvas){
-			
-		}
+		public void draw(Canvas canvas){}
 	}
 	
 	
@@ -237,6 +235,11 @@ public class DrawPad extends View implements Serializable {
     
     public void setDrawBackgroundColor(int color){
     	backgroundPaint.setColor(color);
+    	invalidate();
+    }
+    
+    public void reDraw(){
+    	resetPath();
     	invalidate();
     }
     

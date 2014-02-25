@@ -1,5 +1,13 @@
 package com.example.mydraw;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,11 +27,13 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -47,8 +57,8 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 	private LinearLayout colorPickerLayout;
 	private RelativeLayout sizeInputLayout;
 	
-	private final int POSITION_BACK = -80;
-	private final int POSTION_FORWARD = 80;
+	private final int POSITION_BACK = -500;
+	private final int POSTION_FORWARD = 500;
 	
 	private EditText strokeEditText;
 	
@@ -77,8 +87,23 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+//		getMenuInflater().inflate(R.menu.main, menu);
+		
 		return true;
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if ( keyCode == KeyEvent.KEYCODE_MENU ) {
+	    	buttonMap.get("topLeftCornerButton").performClick();
+	        return true;
+	    }
+	    if ( keyCode == KeyEvent.KEYCODE_BACK ) {
+	    	toggleView(colorPickerLayout);
+	    	mainCanvas.setColor(colorPicker.getColor());
+	        return true;
+	    }
+	    return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
@@ -100,6 +125,50 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 	}
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {return false;}
+	
+	@Override
+	protected void onPause() {
+		
+		try {
+			FileOutputStream outputCanvas = new FileOutputStream(new File("/data/data/com.example.mydraw/canvas"));
+			ObjectOutputStream os = new ObjectOutputStream(outputCanvas);
+			os.writeObject(mainCanvas);
+			os.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		super.onPause();
+	}
+	
+	@Override
+	protected void onResume() {
+		
+		try {
+			FileInputStream fis = new FileInputStream(new File("/data/data/com.example.mydraw/canvas"));
+			ObjectInputStream is = new ObjectInputStream(fis);
+			DrawPad mainCanvas = (DrawPad) is.readObject();
+			is.close();
+			mainCanvas.reDraw();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (StreamCorruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		super.onResume();
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -253,17 +322,11 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 			resetLayoutPosition(POSTION_FORWARD);
 			offScreen = true;
 		}
-		
-		if(colorPickerLayout.getVisibility() == View.VISIBLE){
-			mainCanvas.setColor(colorPicker.getColor());
-			toggleView(colorPickerLayout);
-		}
-			
 	}
 	
 	public void resetLayoutPosition(float position){
 		typeLayout.animate().translationXBy(position).withLayer();
-		widthLayout.animate().translationYBy(position).withLayer();
+		widthLayout.animate().translationXBy(-position).withLayer();
 
 	}
 

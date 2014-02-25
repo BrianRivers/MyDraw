@@ -74,7 +74,7 @@ public class DrawButton extends Button {
 			// compute 50sp size for font -- make sure font appears right size on
 			// all devices.
 			float scaledDensity = getContext().getResources().getDisplayMetrics().scaledDensity;
-			float spFontSize = 10;
+			float spFontSize = 25;
 			float correctSize = spFontSize * scaledDensity;
 			
 			
@@ -105,6 +105,7 @@ public class DrawButton extends Button {
 		float yPos = (currentHeight  - fontPaint.ascent()) / 2f ; 
 		//canvas.drawRoundRect(rect, 4, 4, backgroundPaint);
 		canvas.drawText(displayText, xPos - 5, yPos, fontPaint);
+		
 		
 		
 	}
