@@ -52,35 +52,8 @@ public class DrawPad extends View implements Serializable {
 	
 	class Shape{
 		
-		private DrawType shapeType;
-		
-		public DrawType getShapeType(){
-			return shapeType;
-		}
-		
-		public float getXPoint(){
-			float test = 0;
-			return test;
-		}
-		public float getYPoint(){
-			float test = 0;
-			return test;
-		}
-		public Path getPath(){
-			Path test = new Path();
-			return test;
-		}
-		public Paint getPaint(){
-			Paint test = new Paint();
-			return test;
-		}
-		public float getRadius(){
-			float test = 0;
-			return test;
-		}
-		public Rect getRect(){
-			Rect test = new Rect();
-			return test;
+		public void draw(Canvas canvas){
+			
 		}
 	}
 	
@@ -106,6 +79,19 @@ public class DrawPad extends View implements Serializable {
 		public DrawType getShapeType(){
 			return shapeType;
 		}
+		
+		public void draw(Canvas canvas){
+			canvas.drawPath(path, paint);
+		}
+		
+		public void makeLine(float xPoint, float yPoint){
+			path.lineTo(xPoint, yPoint);
+		}
+		
+		public void makeMove(float xPoint, float yPoint){
+			path.moveTo(xPoint, yPoint);
+		}
+		
 	}
 	
 	class Point extends Shape{
@@ -155,6 +141,10 @@ public class DrawPad extends View implements Serializable {
 			return shapeType;
 		}
 		
+		public void draw(Canvas canvas){
+			canvas.drawCircle(super.xPoint, super.yPoint, radius, super.paint);
+		}
+		
 	}
 	
 	class Rectangle extends Shape{
@@ -179,6 +169,10 @@ public class DrawPad extends View implements Serializable {
 		
 		public DrawType getShapeType(){
 			return shapeType;
+		}
+		
+		public void draw(Canvas canvas){
+			canvas.drawRect(rect, paint);
 		}
 	}
 	
@@ -222,8 +216,6 @@ public class DrawPad extends View implements Serializable {
 		
 		path.add(new Dpath(new Path(), new Paint(setPaint(colorPicked, paintStyle, Paint.Cap.ROUND,drawSize))));
 		shapes.add(path.get(0));
-		
-		Log.i("Test Inside Draw", "<-------------" + shapes.get(0).getShapeType() + "------------- >");
     }
  
     public void setDraw(DrawType _drawType){
@@ -301,13 +293,11 @@ public class DrawPad extends View implements Serializable {
     		readyRectangle(event, tempX, tempY);
     		break;
     	}
-		shapes.add(path.get(path.size()-1));
 		invalidate();
 		return true;
 	}
     public void resetPath(){
-    	path.add(new Dpath(new Path(), new Paint(setPaint(colorPicked, paintStyle, Paint.Cap.ROUND,drawSize))));
-    	shapes.add(path.get(0));
+    	shapes.add(new Dpath(new Path(), new Paint(setPaint(colorPicked, paintStyle, Paint.Cap.ROUND,drawSize))));
     }
     public void readyRectangle(MotionEvent event, float tempX, float tempY){
     	shapes.add(new Rectangle(new Rect((int)tempX, (int)tempY,(int) (tempX + drawSize),(int)( tempY + drawSize)), new Paint(setPaint(colorPicked, paintStyle, Paint.Cap.ROUND,drawSize))));
@@ -324,18 +314,16 @@ public class DrawPad extends View implements Serializable {
     	switch (event.getAction()) {
 	    case MotionEvent.ACTION_DOWN:
 	        Log.i("Test Event", "<------------- DOWN ------------- >");
-	        path.get(path.size()-1).getPath().moveTo(tempX, tempY);
+	        ((Dpath)shapes.get(shapes.size() -1)).makeMove(tempX, tempY);
 	        break;
 	    case MotionEvent.ACTION_MOVE:
 	    	Log.i("Test Event", "<------------- MOVE ------------- >");
-	    	path.get(path.size()-1).getPath().lineTo(tempX, tempY);
+	    	((Dpath)shapes.get(shapes.size() -1)).makeLine(tempX, tempY);
 	        break;
 	    case MotionEvent.ACTION_UP:
 	    	Log.i("Test Event", "<------------- UP ------------- >");
 	        break;
 		}
-    	
-    	path.add(new Dpath(path.get(path.size()-1).getPath(), new Paint(setPaint(colorPicked, paintStyle, Paint.Cap.ROUND,drawSize))));
     }
     
     public void clearCanvas(){
@@ -358,13 +346,7 @@ public class DrawPad extends View implements Serializable {
     		}
     		
     		for(int count = 0; count < shapes.size();count++){
-    			if(shapes.get(count).getShapeType() == DrawType.LINE){
-    				canvas.drawPath(shapes.get(count).getPath(), shapes.get(count).getPaint());
-    			}else if(shapes.get(count).getShapeType() == DrawType.RECTANGLE){
-    				canvas.drawRect(shapes.get(count).getRect(), shapes.get(count).getPaint());
-    			}else if(shapes.get(count).getShapeType() == DrawType.CIRCLE){
-    				canvas.drawCircle(shapes.get(count).getXPoint(), shapes.get(count).getYPoint(), shapes.get(count).getRadius(), shapes.get(count).getPaint());
-    			}
+    			shapes.get(count).draw(canvas);
     		}
     		
     		if(toggleSave){
