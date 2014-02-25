@@ -57,6 +57,32 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int bar_thickness=0x7f010006;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int buttonBackgroundColor=0x7f01000c;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int buttonFontColor=0x7f01000d;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int centerMessage=0x7f01000b;
         /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
 Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
 in (inches), mm (millimeters).
@@ -146,36 +172,35 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int bottonRightCornerButton=0x7f080009;
-        public static final int button1=0x7f08001a;
+        public static final int button1=0x7f080019;
         public static final int canvasLayout=0x7f080000;
         public static final int circleButton=0x7f080011;
-        public static final int clearAll=0x7f08001d;
+        public static final int clearAll=0x7f08001c;
+        public static final int colorButton=0x7f08000a;
         public static final int colorPicker=0x7f080003;
         public static final int colorPickerLayout=0x7f080002;
-        public static final int editText1=0x7f080015;
-        public static final int fillRadioButton=0x7f080019;
+        public static final int editText1=0x7f080014;
+        public static final int fillRadioButton=0x7f080018;
         public static final int lineButton=0x7f080010;
         public static final int mainCanvas=0x7f080001;
         public static final int opacitybar=0x7f080004;
         public static final int rectangleButton=0x7f08000f;
         public static final int saturationbar=0x7f080005;
-        public static final int setBackground=0x7f08001b;
-        public static final int sizeInputLayout=0x7f080013;
-        public static final int strokeRadioButton=0x7f080018;
-        public static final int strokeRadioGroup=0x7f080017;
-        public static final int strokeWidth=0x7f08001c;
+        public static final int saveButton=0x7f08000c;
+        public static final int setBackground=0x7f08001a;
+        public static final int settingsButton=0x7f08000b;
+        public static final int sizeInputLayout=0x7f080012;
+        public static final int strokeRadioButton=0x7f080017;
+        public static final int strokeRadioGroup=0x7f080016;
+        public static final int strokeWidth=0x7f08001b;
         public static final int svbar=0x7f080007;
-        public static final int textView1=0x7f080014;
-        public static final int textView2=0x7f080016;
+        public static final int textView1=0x7f080013;
+        public static final int textView2=0x7f080015;
         public static final int topLeftCornerButton=0x7f080008;
-        public static final int topRightCornerButton=0x7f080012;
         public static final int typeLayout=0x7f08000e;
+        public static final int undoButton=0x7f08000d;
         public static final int valuebar=0x7f080006;
-        public static final int widthLargeButton=0x7f08000d;
-        public static final int widthLayout=0x7f08000a;
-        public static final int widthMediumButton=0x7f08000c;
-        public static final int widthSmallButton=0x7f08000b;
+        public static final int widthLayout=0x7f080009;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -437,5 +462,66 @@ containing a value of this type.
           @attr name com.example.mydraw:color_wheel_thickness
         */
         public static final int ColorPicker_color_wheel_thickness = 1;
+        /** Attributes that can be used with a DrawButton.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #DrawButton_buttonBackgroundColor com.example.mydraw:buttonBackgroundColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #DrawButton_buttonFontColor com.example.mydraw:buttonFontColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #DrawButton_centerMessage com.example.mydraw:centerMessage}</code></td><td></td></tr>
+           </table>
+           @see #DrawButton_buttonBackgroundColor
+           @see #DrawButton_buttonFontColor
+           @see #DrawButton_centerMessage
+         */
+        public static final int[] DrawButton = {
+            0x7f01000b, 0x7f01000c, 0x7f01000d
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.example.mydraw.R.attr#buttonBackgroundColor}
+          attribute's value can be found in the {@link #DrawButton} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.mydraw:buttonBackgroundColor
+        */
+        public static final int DrawButton_buttonBackgroundColor = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.example.mydraw.R.attr#buttonFontColor}
+          attribute's value can be found in the {@link #DrawButton} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.mydraw:buttonFontColor
+        */
+        public static final int DrawButton_buttonFontColor = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.example.mydraw.R.attr#centerMessage}
+          attribute's value can be found in the {@link #DrawButton} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.mydraw:centerMessage
+        */
+        public static final int DrawButton_centerMessage = 0;
     };
 }

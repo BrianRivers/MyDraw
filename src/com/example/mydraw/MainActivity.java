@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.InputType;
 import android.util.Log;
@@ -46,6 +47,9 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 	private LinearLayout colorPickerLayout;
 	private RelativeLayout sizeInputLayout;
 	
+	private final int POSITION_BACK = -80;
+	private final int POSTION_FORWARD = 80;
+	
 	private EditText strokeEditText;
 	
 	private ColorPicker colorPicker;
@@ -53,6 +57,7 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 	private SVBar svBar;
 	private SaturationBar saturationBar;
 	private ValueBar valueBar;
+	private boolean offScreen;
 	
 	private int valueCheck;
 	
@@ -101,39 +106,37 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		Log.i("Test Click Event", "< ----------------- I Was Clicked! ----------------->");
 		switch(v.getId()){
 		case R.id.topLeftCornerButton:
-			toggleButtonMenu(R.id.topLeftCornerButton);
-			break;
-		case R.id.bottonRightCornerButton:
-			toggleButtonMenu(R.id.bottonRightCornerButton);
-			break;
-		case R.id.topRightCornerButton:
-			 Log.i("Test Event", "<------------- Enter TopRightCorner OnClick ------------- >");
-			mainCanvas.undoLast();
+			toggleButtons();
 			break;
 		case R.id.rectangleButton:
 			mainCanvas.setDraw(DrawType.RECTANGLE);
-			toggleButtonMenu(R.id.topLeftCornerButton);
+			buttonMap.get("topLeftCornerButton").performClick();
 			break;
 		case R.id.lineButton:
 			mainCanvas.setDraw(DrawType.LINE);
-			toggleButtonMenu(R.id.topLeftCornerButton);
+			buttonMap.get("topLeftCornerButton").performClick();
 			break;
 		case R.id.circleButton:
 			 mainCanvas.setDraw(DrawType.CIRCLE);
-			 toggleButtonMenu(R.id.topLeftCornerButton);
+			 buttonMap.get("topLeftCornerButton").performClick();
 			Log.i("Test Click Event", "< ----------------- " + valueCheck + " ----------------->");
 			break;
-		case R.id.widthSmallButton:
-			toggleButtonMenu(R.id.topLeftCornerButton);
+		case R.id.colorButton:
+			buttonMap.get("topLeftCornerButton").performClick();
+			toggleView(colorPickerLayout);
 			break;
-		case R.id.widthMediumButton:
-			toggleButtonMenu(R.id.topLeftCornerButton);
+		case R.id.saveButton:
 			break;
-		case R.id.widthLargeButton:
-			toggleButtonMenu(R.id.topLeftCornerButton);
+		case R.id.undoButton:
+			mainCanvas.clearCanvas();
+			buttonMap.get("topLeftCornerButton").performClick();
+			break;
+		case R.id.settingsButton:
+			buttonMap.get("topLeftCornerButton").performClick();
+			toggleView(sizeInputLayout);
 			break;
 		case R.id.button1:
-			toggleButtonMenu(R.id.button1);
+			toggleView(sizeInputLayout);
 			mainCanvas.setDrawSize(Integer.parseInt(strokeEditText.getText().toString()));
 			if(strokeFillRadio.getCheckedRadioButtonId() == R.id.strokeRadioButton)
 				mainCanvas.setPaintStyle(Paint.Style.STROKE);
@@ -150,15 +153,16 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		mainCanvas = (DrawPad) findViewById(R.id.mainCanvas);
 		
 		buttonMap.put("topLeftCornerButton", (Button)findViewById(R.id.topLeftCornerButton));
-		buttonMap.put("bottomRightCornerButton", (Button)findViewById(R.id.bottonRightCornerButton));
-		buttonMap.put("topRightCornerButton", (Button)findViewById(R.id.topRightCornerButton));
-		buttonMap.put("widthSmallButton", (Button)findViewById(R.id.widthSmallButton));
-		buttonMap.put("widthMediumButton", (Button)findViewById(R.id.widthMediumButton));
-		buttonMap.put("widthLargeButton", (Button)findViewById(R.id.widthLargeButton));
+		buttonMap.put("saveButton", (Button)findViewById(R.id.saveButton));
+		buttonMap.put("colorButton", (Button)findViewById(R.id.colorButton));
+		buttonMap.put("undoButton", (Button)findViewById(R.id.undoButton));
 		buttonMap.put("pointButton", (Button)findViewById(R.id.rectangleButton));
 		buttonMap.put("circleButton", (Button)findViewById(R.id.circleButton));
 		buttonMap.put("lineButton", (Button)findViewById(R.id.lineButton));
 		buttonMap.put("setSizeButton", (Button)findViewById(R.id.button1));
+		buttonMap.put("settingsButton", (Button)findViewById(R.id.settingsButton));
+		
+		offScreen = false;
 		
 		typeLayout = (LinearLayout) findViewById(R.id.typeLayout);
 		widthLayout = (LinearLayout) findViewById(R.id.widthLayout);
@@ -181,7 +185,7 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		colorPicker.addOpacityBar(opacityBar);
 		colorPicker.addSaturationBar(saturationBar);
 		colorPicker.addValueBar(valueBar);
-		resetLayoutPosition(-40);
+		resetLayoutPosition(POSITION_BACK);
 		for(Entry<String,Button> entry: buttonMap.entrySet()){
 			entry.getValue().setOnClickListener(this);
 		}	
@@ -197,26 +201,27 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 			if(typeLayout.getVisibility() == View.VISIBLE) {
 				typeLayout.setVisibility(View.GONE);
 				widthLayout.setVisibility(View.GONE);
-				resetLayoutPosition(-40);
+				
 			}else{
 				typeLayout.setVisibility(View.VISIBLE);
 				widthLayout.setVisibility(View.VISIBLE);
-				resetLayoutPosition(40);
+			
 			}
 			break;
-		case R.id.bottonRightCornerButton:
+		case R.id.colorButton:
 		case R.id.setBackground:
 			if(colorPickerLayout.getVisibility() == View.VISIBLE) {
 				colorPickerLayout.setVisibility(View.GONE);
-				if(R.id.bottonRightCornerButton == toggle)
+				if(R.id.colorButton == toggle)
 					mainCanvas.setColor(colorPicker.getColor());
 				else
-					mainCanvas.setBackgroundColor(colorPicker.getColor());
+					mainCanvas.setDrawBackgroundColor(colorPicker.getColor());
 				
 			}else{
 				colorPickerLayout.setVisibility(View.VISIBLE);
 			}
 		break;
+		case R.id.settingsButton:
 		case R.id.button1:
 		case R.id.strokeWidth:
 			if(sizeInputLayout.getVisibility() == View.VISIBLE) {
@@ -231,9 +236,35 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 			
 	}
 	
+	public void toggleView(View view){
+		if(view.getVisibility() == View.VISIBLE) {
+			view.setVisibility(View.GONE);
+			
+		}else{
+			view.setVisibility(View.VISIBLE);	
+		}
+	}
+	
+	public void toggleButtons(){
+		if (offScreen){
+			resetLayoutPosition(POSITION_BACK);
+			offScreen = false;
+		}else{
+			resetLayoutPosition(POSTION_FORWARD);
+			offScreen = true;
+		}
+		
+		if(colorPickerLayout.getVisibility() == View.VISIBLE){
+			mainCanvas.setColor(colorPicker.getColor());
+			toggleView(colorPickerLayout);
+		}
+			
+	}
+	
 	public void resetLayoutPosition(float position){
 		typeLayout.animate().translationXBy(position).withLayer();
 		widthLayout.animate().translationYBy(position).withLayer();
+
 	}
 
 	@Override

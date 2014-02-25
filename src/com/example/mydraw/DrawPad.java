@@ -5,26 +5,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
-
-import android.R.bool;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Paint.Cap;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 
 public class DrawPad extends View implements Serializable {
 	
@@ -40,6 +32,7 @@ public class DrawPad extends View implements Serializable {
 	private int colorPicked;
 	private String fileName;
 	private Paint.Style paintStyle;
+	private Paint backgroundPaint;
 	
 	 
 	//For Saving the image
@@ -56,6 +49,7 @@ public class DrawPad extends View implements Serializable {
 			
 		}
 	}
+	
 	
 	class Dpath extends Shape {
 		private Path path;
@@ -214,6 +208,9 @@ public class DrawPad extends View implements Serializable {
 		path = new ArrayList<Dpath>();
 		shapes = new ArrayList<Shape>();
 		
+		backgroundPaint = new Paint();
+		backgroundPaint.setColor(Color.GRAY);
+		backgroundPaint.setStyle(Paint.Style.FILL);
 		path.add(new Dpath(new Path(), new Paint(setPaint(colorPicked, paintStyle, Paint.Cap.ROUND,drawSize))));
 		shapes.add(path.get(0));
     }
@@ -236,6 +233,11 @@ public class DrawPad extends View implements Serializable {
     public void setPaintStyle(Paint.Style _paintStyle){
     	paintStyle = _paintStyle;
     	resetPath();
+    }
+    
+    public void setDrawBackgroundColor(int color){
+    	backgroundPaint.setColor(color);
+    	invalidate();
     }
     
     public void undoLast(){
@@ -344,6 +346,9 @@ public class DrawPad extends View implements Serializable {
     			saveBitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
     			canvas.setBitmap(saveBitmap);
     		}
+    		
+    		canvas.drawPaint(backgroundPaint);
+    		
     		
     		for(int count = 0; count < shapes.size();count++){
     			shapes.get(count).draw(canvas);
