@@ -1,3 +1,20 @@
+/*
+ * Brian Rivers
+ * CSCI 4020
+ * 
+ * 
+ * Options:
+ * Squares, Ovals, Lines, Circle
+ * Fully polymorphic
+ * Undo
+ * Save
+ * HoloColorpicker (Feature?)
+ * animated Custom Buttons
+ * Eraser
+ * 
+ * */
+
+
 package com.example.mydraw;
 
 import java.io.File;
@@ -68,6 +85,7 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 	private SaturationBar saturationBar;
 	private ValueBar valueBar;
 	private boolean offScreen;
+	private boolean setBackground;
 	
 	private int valueCheck;
 	
@@ -100,7 +118,10 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 	    }
 	    if ( keyCode == KeyEvent.KEYCODE_BACK ) {
 	    	toggleView(colorPickerLayout);
-	    	mainCanvas.setColor(colorPicker.getColor());
+	    	if(setBackground){
+	    		mainCanvas.setDrawBackgroundColor(colorPicker.getColor());
+	    	}else
+	    		mainCanvas.setColor(colorPicker.getColor());
 	        return true;
 	    }
 	    return super.onKeyDown(keyCode, event);
@@ -169,6 +190,12 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		
 		super.onResume();
 	}
+	
+
+	
+	public void translateY(){
+		
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -190,13 +217,27 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 			 buttonMap.get("topLeftCornerButton").performClick();
 			Log.i("Test Click Event", "< ----------------- " + valueCheck + " ----------------->");
 			break;
-		case R.id.colorButton:
+		case R.id.triangleButton:
+			 mainCanvas.setDraw(DrawType.TRIANGLE);
+			 buttonMap.get("topLeftCornerButton").performClick();
+			 break;
+		case R.id.backgroundButton:
 			buttonMap.get("topLeftCornerButton").performClick();
 			toggleView(colorPickerLayout);
+			pickColor(buttonMap.get("backgroundButton"));
+			break;
+		case R.id.colorButton:
+			buttonMap.get("topLeftCornerButton").performClick();
+			pickColor(buttonMap.get("colorButton"));
+			toggleView(colorPickerLayout);
+			break;
+		case R.id.eraseButton:
+			mainCanvas.setDraw(DrawType.ERASE);
+			 buttonMap.get("topLeftCornerButton").performClick();
 			break;
 		case R.id.saveButton:
 			break;
-		case R.id.undoButton:
+		case R.id.clearButton:
 			mainCanvas.clearCanvas();
 			buttonMap.get("topLeftCornerButton").performClick();
 			break;
@@ -224,12 +265,16 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		buttonMap.put("topLeftCornerButton", (Button)findViewById(R.id.topLeftCornerButton));
 		buttonMap.put("saveButton", (Button)findViewById(R.id.saveButton));
 		buttonMap.put("colorButton", (Button)findViewById(R.id.colorButton));
-		buttonMap.put("undoButton", (Button)findViewById(R.id.undoButton));
+		buttonMap.put("undoButton", (Button)findViewById(R.id.clearButton));
 		buttonMap.put("pointButton", (Button)findViewById(R.id.rectangleButton));
 		buttonMap.put("circleButton", (Button)findViewById(R.id.circleButton));
+		buttonMap.put("trinagleButton", (Button)findViewById(R.id.triangleButton));
 		buttonMap.put("lineButton", (Button)findViewById(R.id.lineButton));
 		buttonMap.put("setSizeButton", (Button)findViewById(R.id.button1));
 		buttonMap.put("settingsButton", (Button)findViewById(R.id.settingsButton));
+		buttonMap.put("backgroundButton", (Button)findViewById(R.id.backgroundButton));
+		buttonMap.put("eraseButton", (Button)findViewById(R.id.eraseButton));
+		
 		
 		offScreen = false;
 		
@@ -245,7 +290,7 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		svBar = (SVBar) findViewById(R.id.svbar);
 		saturationBar = (SaturationBar) findViewById(R.id.saturationbar);
 		valueBar = (ValueBar) findViewById(R.id.valuebar);
-		
+		setBackground = false;
 		mainCanvas.setOnTouchListener(this);
 		colorPicker.setOnColorChangedListener(this);
 		colorPicker.setOnClickListener(this);
@@ -303,6 +348,14 @@ public class MainActivity extends Activity implements OnTouchListener, OnClickLi
 		
 		
 			
+	}
+	
+	public void pickColor(View view){
+		if(view.getId() == R.id.backgroundButton){
+			setBackground = true;
+		}
+		else
+			setBackground = false;
 	}
 	
 	public void toggleView(View view){

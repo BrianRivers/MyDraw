@@ -1,3 +1,5 @@
+
+
 package com.example.mydraw;
 
 import java.io.File;
@@ -111,6 +113,41 @@ public class DrawPad extends View implements Serializable {
 		
 		
 	}
+
+//	class Triangle extends Point{
+//		
+//		
+//		private final int ANGLE= 60;
+//		//private List<Path> paths;
+//		private Path path;
+//		private List<Path> paths;
+//		
+//		Triangle(float _xTriangle, float _yTriangle, float _radius, Paint _paint){
+//			float xPoints[] = new float[3];
+//			float yPoints []= new float[3];
+//			paths = new ArrayList<Path>();
+//			super.paint = _paint;
+//			
+//			path = new Path();
+//			
+//			for (int count = 0; count < 3; count++){
+//				xPoints[count] =  _xTriangle + _radius * (float) Math.cos(ANGLE + count * 2 * Math.PI/3);
+//				yPoints[count] =  _yTriangle + _radius * (float) Math.sin(ANGLE + count * 2 * Math.PI/3);
+//				
+//				path.moveTo(xPoints[count], yPoints[count]);
+//				path.lineTo(xPoints[count], yPoints[count]);
+//				
+//			}
+//			path.moveTo(xPoints[0], yPoints[0]);
+//			path.close();
+//		}
+//		
+//		public void draw(Canvas canvas){
+//			//for(int count = 0; count < 3; count ++)
+//				canvas.drawPath(path, super.paint);
+//		}
+//		
+//	}
 	
 	class Circle extends Point{
 		
@@ -171,7 +208,7 @@ public class DrawPad extends View implements Serializable {
 	
 	
 	
-	public enum DrawType { LINE, CIRCLE, SQUARE, POINT, RECTANGLE }
+	public enum DrawType { LINE, CIRCLE, SQUARE, POINT, RECTANGLE, TRIANGLE, ERASE }
 	public enum DrawSize { 
 		SMALL(5), MEDIUM(10), LARGE(20);
 		
@@ -297,10 +334,17 @@ public class DrawPad extends View implements Serializable {
     	case RECTANGLE:
     		readyRectangle(event, tempX, tempY);
     		break;
+    	case ERASE:
+    		readyErase(event, tempX, tempY);
     	}
 		invalidate();
 		return true;
 	}
+    
+    public void readyErase(MotionEvent event, float tempX, float tempY){
+    	//shapes.add(new Triangle(tempX, tempY,drawSize, new Paint(setPaint(colorPicked, paintStyle, Paint.Cap.ROUND,drawSize))));
+    	shapes.add(new Circle(tempX, tempY, drawSize + 10, new Paint(backgroundPaint)));
+    }
     public void resetPath(){
     	shapes.add(new Dpath(new Path(), new Paint(setPaint(colorPicked, paintStyle, Paint.Cap.ROUND,drawSize))));
     }

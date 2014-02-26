@@ -53,9 +53,10 @@
             android:layout_height="fill_parent" />
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent" 
+        android:orientation="vertical">
         
        
 
@@ -63,105 +64,119 @@
             android:id="@+id/widthLayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:visibility="visible" >
+            android:visibility="visible" 
+            android:orientation="vertical">
             
             
 
             <com.example.mydraw.DrawButton 
 	           android:id="@+id/colorButton"
-	            android:layout_width="0dp"
-			    android:layout_height="fill_parent"
-			    android:layout_weight=".25"
+	           android:layout_width="fill_parent"
+			    android:layout_height="0dp"
+			    android:layout_weight=".1"
 			    app:centerMessage="Color"
 			    app:buttonFontColor="#000"
 	           />
             
               <com.example.mydraw.DrawButton 
 	           android:id="@+id/settingsButton" 
-	           android:layout_width="0dp"
-			    android:layout_height="fill_parent"
-			     android:layout_weight=".25"
+	          android:layout_width="fill_parent"
+			    android:layout_height="0dp"
+			     android:layout_weight=".1"
 			    app:centerMessage="Size"
 			    app:buttonFontColor="#000"
 	           />
 
              <com.example.mydraw.DrawButton 
 	           android:id="@+id/saveButton"
-	           android:layout_width="0dp"
-			    android:layout_height="fill_parent"
-			     android:layout_weight=".25"
+	          android:layout_width="fill_parent"
+			    android:layout_height="0dp"
+			     android:layout_weight=".1"
 			    app:centerMessage="Save"
 			    app:buttonFontColor="#000"
 	           />
 
             <com.example.mydraw.DrawButton 
-	           android:id="@+id/undoButton"
-	            android:layout_width="0dp"
-			    android:layout_height="fill_parent"
-			     android:layout_weight=".25"
+	           android:id="@+id/clearButton"
+	            android:layout_width="fill_parent"
+			    android:layout_height="0dp"
+			     android:layout_weight=".1"
 			    app:centerMessage="Undo"
 			    app:buttonFontColor="#000"
 	           />
+            
+             <com.example.mydraw.DrawButton 
+	           android:id="@+id/backgroundButton"
+	            android:layout_width="fill_parent"
+			    android:layout_height="0dp"
+			     android:layout_weight=".1"
+			    app:centerMessage="Background"
+			    app:buttonFontColor="#000"
+	           />
+             
+                <com.example.mydraw.DrawButton
+                 android:id="@+id/rectangleButton"
+                android:layout_width="fill_parent"
+			    android:layout_height="0dp"
+                 android:layout_weight=".1"
+                 app:buttonFontColor="#000"
+                 app:centerMessage="Square" />
+
+             <com.example.mydraw.DrawButton
+                 android:id="@+id/lineButton"
+                 android:layout_width="fill_parent"
+			    android:layout_height="0dp"
+                 android:layout_weight=".1"
+                 app:buttonFontColor="#000"
+                 app:centerMessage="Line" />
+
+             <com.example.mydraw.DrawButton
+                 android:id="@+id/circleButton"
+                 android:layout_width="fill_parent"
+			    android:layout_height="0dp"
+                 android:layout_weight=".1"
+                 app:buttonFontColor="#000"
+                 app:centerMessage="Circle" />
+             
+             <com.example.mydraw.DrawButton
+                 android:id="@+id/triangleButton"
+                 android:layout_width="fill_parent"
+			    android:layout_height="0dp"
+                 android:layout_weight=".1"
+                 app:buttonFontColor="#000"
+                 app:centerMessage="Oval" />
+             
+              <com.example.mydraw.DrawButton
+                 android:id="@+id/eraseButton"
+                 android:layout_width="fill_parent"
+			    android:layout_height="0dp"
+                 android:layout_weight=".1"
+                 app:buttonFontColor="#000"
+                 app:centerMessage="Erase" />
         </LinearLayout>
 
          <com.example.mydraw.DrawButton
              android:id="@+id/topLeftCornerButton"
              android:layout_width="75dp"
              android:layout_height="50dp"
-             android:layout_alignParentBottom="true"
-             android:layout_alignParentRight="true"
              android:layout_marginBottom="15dp"
              android:layout_marginRight="14dp"
              app:buttonFontColor="#000"
              app:centerMessage="Toggle"
-             android:visibility="invisible" />
+             android:visibility="gone" />
 
          <LinearLayout
              android:id="@+id/typeLayout"
              android:layout_width="fill_parent"
              android:layout_height="wrap_content"
-             android:layout_alignParentLeft="true"
-             android:layout_alignParentTop="true"
              android:layout_marginTop="60dp"
-             android:orientation="horizontal"
+             android:orientation="vertical"
              android:visibility="visible" >
 
-             <com.example.mydraw.DrawButton
-                 android:id="@+id/rectangleButton"
-                 android:layout_width="0dp"
-                 android:layout_height="fill_parent"
-                 android:layout_weight=".25"
-                 app:buttonFontColor="#000"
-                 app:centerMessage="Square" />
-
-             <com.example.mydraw.DrawButton
-                 android:id="@+id/lineButton"
-                 android:layout_width="0dp"
-                 android:layout_height="fill_parent"
-                 android:layout_weight=".25"
-                 app:buttonFontColor="#000"
-                 app:centerMessage="Line" />
-
-             <com.example.mydraw.DrawButton
-                 android:id="@+id/circleButton"
-                 android:layout_width="0dp"
-                 android:layout_height="fill_parent"
-                 android:layout_weight=".25"
-                 app:buttonFontColor="#000"
-                 app:centerMessage="Circle" />
-             
-             <com.example.mydraw.DrawButton
-                 android:id="@+id/ovalButton"
-                 android:layout_width="0dp"
-                 android:layout_height="fill_parent"
-                 android:layout_weight=".25"
-                 app:buttonFontColor="#000"
-                 app:centerMessage="Oval" />
+          
          </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/sizeInputLayout"

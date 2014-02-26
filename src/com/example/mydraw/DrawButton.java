@@ -41,7 +41,7 @@ public class DrawButton extends Button {
 	
 	private void init(AttributeSet attrs) {
 		String centerMessage = "Test";
-		int buttonBackgroundColor = Color.BLUE;
+		int buttonBackgroundColor = Color.DKGRAY;
 		int buttonFontColor = Color.WHITE;
 		DrawType shape = DrawType.LINE;
 		
@@ -58,7 +58,7 @@ public class DrawButton extends Button {
 			
 			backgroundPaint = new Paint();
 			backgroundPaint.setColor(a.getColor(R.styleable.DrawButton_buttonBackgroundColor, buttonBackgroundColor));
-			backgroundPaint.setStyle(Paint.Style.STROKE);
+			backgroundPaint.setStyle(Paint.Style.FILL);
 			
 			
 			
@@ -74,7 +74,7 @@ public class DrawButton extends Button {
 			// compute 50sp size for font -- make sure font appears right size on
 			// all devices.
 			float scaledDensity = getContext().getResources().getDisplayMetrics().scaledDensity;
-			float spFontSize = 25;
+			float spFontSize = 20;
 			float correctSize = spFontSize * scaledDensity;
 			
 			
@@ -97,7 +97,7 @@ public class DrawButton extends Button {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		
+		canvas.drawPaint(backgroundPaint);
 		//canvas.drawPaint(backgroundPaint);
 		// x coord for centering
 		float xPos = currentWidth / 2f;
